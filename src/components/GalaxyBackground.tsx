@@ -1,8 +1,8 @@
 import { motion } from 'motion/react';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, memo } from 'react';
 
 export function GalaxyBackground({ theme = 'rose' }: { theme?: 'rose' | 'blue' | 'purple' }) {
-  const [stars, setStars] = useState<{ id: number; left: number; top: number; size: number; delay: number; duration: number; type: 'dot' | 'heart'; opacity: number }[]>([]);
+  const [stars, setStars] = useState<{ id: number; left: number; top: number; size: number; delay: number; duration: number; type: 'dot' | 'heart'; opacity: number; drift: number; rot: number }[]>([]);
 
   const themeColors = {
     rose: {
@@ -37,18 +37,20 @@ export function GalaxyBackground({ theme = 'rose' }: { theme?: 'rose' | 'blue' |
   const current = themeColors[theme];
 
   useEffect(() => {
-    // Generate a mix of tiny star dots and small romantic hearts
-    const newElements = Array.from({ length: 80 }).map((_, i) => {
-      const isHeart = Math.random() > 0.7; // 30% hearts, 70% star dots
+    // Reduce particle count slightly for better performance on lower-end devices
+    const newElements = Array.from({ length: 45 }).map((_, i) => {
+      const isHeart = Math.random() > 0.7;
       return {
         id: i,
         left: Math.random() * 100,
         top: Math.random() * 100,
-        size: isHeart ? Math.random() * 12 + 6 : Math.random() * 3 + 1,
+        size: isHeart ? Math.random() * 10 + 6 : Math.random() * 3 + 1,
         delay: Math.random() * 5,
-        duration: Math.random() * 20 + 20, // Very slow movement
+        duration: Math.random() * 20 + 15,
         type: isHeart ? 'heart' : 'dot',
-        opacity: isHeart ? Math.random() * 0.4 + 0.3 : Math.random() * 0.5 + 0.2, // Hearts are slightly more opaque
+        opacity: isHeart ? Math.random() * 0.4 + 0.3 : Math.random() * 0.5 + 0.2,
+        drift: (Math.random() * 10 - 5), // vw drift
+        rot: isHeart ? (Math.random() * 60 - 30) : 0,
       };
     });
     setStars(newElements as any);
@@ -57,6 +59,24 @@ export function GalaxyBackground({ theme = 'rose' }: { theme?: 'rose' | 'blue' |
   return (
     <div className={`fixed inset-0 pointer-events-none overflow-hidden z-0 bg-[#251b1b] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${current.bg}`}>
       
+      {/* High-performance CSS Animations */}
+      <style>
+        {`
+          @keyframes floatParticle {
+            0% { transform: translate3d(0, 0, 0) scale(0.5) rotate(0deg); opacity: 0; }
+            20% { opacity: var(--tw-star-opacity); transform: translate3d(calc(var(--tw-star-drift) * 0.2vw), -3vh, 0) scale(1) rotate(calc(var(--tw-star-rot) * 0.2deg)); }
+            80% { opacity: var(--tw-star-opacity); transform: translate3d(calc(var(--tw-star-drift) * 0.8vw), -12vh, 0) scale(1) rotate(calc(var(--tw-star-rot) * 0.8deg)); }
+            100% { transform: translate3d(calc(var(--tw-star-drift) * 1vw), -15vh, 0) scale(0.5) rotate(calc(var(--tw-star-rot) * 1deg)); opacity: 0; }
+          }
+          @keyframes floatHeart {
+            0% { transform: translate3d(0, 0, 0) scale(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; transform: translate3d(calc(var(--tw-heart-drift) * 0.1vw), -12vh, 0) scale(1) rotate(calc(var(--tw-heart-rot) * 0.1deg)); }
+            90% { opacity: 0.6; transform: translate3d(calc(var(--tw-heart-drift) * 0.9vw), -108vh, 0) scale(1) rotate(calc(var(--tw-heart-rot) * 0.9deg)); }
+            100% { transform: translate3d(calc(var(--tw-heart-drift) * 1vw), -120vh, 0) scale(0) rotate(calc(var(--tw-heart-rot) * 1deg)); opacity: 0; }
+          }
+        `}
+      </style>
+
       {/* Animated Galaxy Dust (Nebula-like Orbs) */}
       <motion.div 
         animate={{ 
@@ -65,6 +85,7 @@ export function GalaxyBackground({ theme = 'rose' }: { theme?: 'rose' | 'blue' |
         }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
         className={`absolute top-0 left-1/4 w-[40vw] h-[40vw] rounded-full blur-[120px] mix-blend-screen ${current.orb1}`}
+        style={{ willChange: 'transform' }}
       />
       <motion.div 
         animate={{ 
@@ -73,6 +94,7 @@ export function GalaxyBackground({ theme = 'rose' }: { theme?: 'rose' | 'blue' |
         }}
         transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
         className={`absolute bottom-1/4 right-1/4 w-[50vw] h-[50vw] rounded-full blur-[150px] mix-blend-screen ${current.orb2}`}
+        style={{ willChange: 'transform' }}
       />
       <motion.div 
         animate={{ 
@@ -81,36 +103,24 @@ export function GalaxyBackground({ theme = 'rose' }: { theme?: 'rose' | 'blue' |
         }}
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
         className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] rounded-full blur-[150px] mix-blend-overlay ${current.orb3}`}
+        style={{ willChange: 'transform, opacity' }}
       />
 
-      {/* Floating Galaxy Elements (Stars and Hearts) */}
+      {/* Floating Galaxy Elements (Stars and Hearts) using CSS for 60fps performance */}
       {stars.map((star) => (
-        <motion.div
+        <div
           key={star.id}
-          className="absolute"
-          initial={{ 
-            y: `${star.top}vh`, 
-            x: `${star.left}vw`, 
-            opacity: 0,
-            scale: 0.5,
-            rotate: 0 
-          }}
-          animate={{
-            y: [`${star.top}vh`, `${star.top - 15}vh`],
-            x: [`${star.left}vw`, `${star.left + (Math.random() * 10 - 5)}vw`],
-            opacity: [0, star.opacity, star.opacity, 0],
-            scale: [0.5, 1, 1, 0.5],
-            rotate: star.type === 'heart' ? [0, 30, -30, 0] : 0,
-          }}
-          transition={{
-            duration: star.duration,
-            repeat: Infinity,
-            delay: star.delay,
-            ease: "linear"
-          }}
+          className="absolute will-change-transform"
           style={{ 
+            top: `${star.top}vh`,
+            left: `${star.left}vw`,
             width: star.size, 
             height: star.size,
+            animation: `floatParticle ${star.duration}s linear ${star.delay}s infinite`,
+            opacity: 0,
+            ['--tw-star-opacity' as any]: star.opacity,
+            ['--tw-star-drift' as any]: star.drift,
+            ['--tw-star-rot' as any]: star.rot,
           }}
         >
           {star.type === 'dot' ? (
@@ -120,17 +130,18 @@ export function GalaxyBackground({ theme = 'rose' }: { theme?: 'rose' | 'blue' |
               <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </svg>
           )}
-        </motion.div>
+        </div>
       ))}
       
-      {/* Eye Catching Romantic Foreground Hearts (A bit larger, floating gracefully up) */}
+      {/* Eye Catching Romantic Foreground Hearts */}
       <FloatingForegroundHearts theme={theme} />
     </div>
   );
 }
 
-function FloatingForegroundHearts({ theme }: { theme: 'rose' | 'blue' | 'purple' }) {
-  const [hearts, setHearts] = useState<{ id: number; left: number; delay: number; size: number; duration: number }[]>([]);
+// Memoized to prevent unnecessary re-renders
+const FloatingForegroundHearts = memo(({ theme }: { theme: 'rose' | 'blue' | 'purple' }) => {
+  const [hearts, setHearts] = useState<{ id: number; left: number; delay: number; size: number; duration: number; drift: number; rot: number }[]>([]);
 
   const fgColors = {
     rose: { class: "text-pink-400/40 drop-shadow-[0_0_15px_rgba(244,114,182,0.4)]", emoji: "❤️" },
@@ -141,12 +152,15 @@ function FloatingForegroundHearts({ theme }: { theme: 'rose' | 'blue' | 'purple'
   const currentFg = fgColors[theme];
 
   useEffect(() => {
-    const newHearts = Array.from({ length: 15 }).map((_, i) => ({
+    // Reduced to 8 for better performance while maintaining visual impact
+    const newHearts = Array.from({ length: 8 }).map((_, i) => ({
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 10,
       size: Math.random() * 20 + 15,
       duration: Math.random() * 15 + 15,
+      drift: (Math.random() * 16 - 8), // horizontal drift
+      rot: (Math.random() * 180 - 90), // rotation
     }));
     setHearts(newHearts);
   }, []);
@@ -154,31 +168,23 @@ function FloatingForegroundHearts({ theme }: { theme: 'rose' | 'blue' | 'purple'
   return (
     <>
       {hearts.map((heart) => (
-        <motion.div
+        <div
           key={heart.id}
-          className={`absolute ${currentFg.class}`}
-          initial={{ y: '110vh', x: `${heart.left}vw`, scale: 0, opacity: 0 }}
-          animate={{
-            y: '-10vh',
-            x: [`${heart.left}vw`, `${heart.left + 8}vw`, `${heart.left - 8}vw`, `${heart.left}vw`],
-            scale: [0, 1, 1, 0],
-            rotate: [0, 90, -90, 0],
-            opacity: [0, 0.6, 0.6, 0]
-          }}
-          transition={{
-            duration: heart.duration,
-            repeat: Infinity,
-            delay: heart.delay,
-            ease: "easeInOut"
-          }}
+          className={`absolute will-change-transform ${currentFg.class}`}
           style={{ 
+            top: '110vh',
+            left: `${heart.left}vw`,
             fontSize: heart.size, 
-            filter: 'blur(1px)' // slight dreamy blur
+            animation: `floatHeart ${heart.duration}s ease-in-out ${heart.delay}s infinite`,
+            opacity: 0,
+            ['--tw-heart-drift' as any]: heart.drift,
+            ['--tw-heart-rot' as any]: heart.rot,
           }}
         >
           {currentFg.emoji}
-        </motion.div>
+        </div>
       ))}
     </>
   );
-}
+});
+
