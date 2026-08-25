@@ -63,6 +63,17 @@ export function EditModal({
           </div>
 
           <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1">Nama Pesta / Acara</label>
+            <input
+              type="text"
+              value={config.partyName || "Natan 22th Birthday"}
+              onChange={(e) => setConfig({ ...config, partyName: e.target.value })}
+              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-pink-500 outline-none"
+              placeholder="Natan 22th Birthday"
+            />
+          </div>
+
+          <div>
             <label className="block text-sm font-medium text-slate-300 mb-1">Judul Ucapan</label>
             <input
               type="text"
@@ -78,6 +89,27 @@ export function EditModal({
               rows={4}
               value={config.finalMessage}
               onChange={(e) => setConfig({ ...config, finalMessage: e.target.value })}
+              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-pink-500 outline-none resize-none"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1">Judul Halaman Terakhir</label>
+            <input
+              type="text"
+              value={config.outroTitle || "Happy Birthday"}
+              onChange={(e) => setConfig({ ...config, outroTitle: e.target.value })}
+              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-pink-500 outline-none"
+              placeholder="Happy Birthday"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1">Teks Halaman Terakhir</label>
+            <textarea
+              rows={4}
+              value={config.outroMessage || "Thank you for being part of my life.\n\nI hope this little gift can make your special day even more beautiful.\n\nForever Yours. ❤️"}
+              onChange={(e) => setConfig({ ...config, outroMessage: e.target.value })}
               className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-pink-500 outline-none resize-none"
             />
           </div>

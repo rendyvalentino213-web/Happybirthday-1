@@ -8,6 +8,7 @@ import { LetterCoverScreen } from './components/LetterCoverScreen';
 import { TypingMessageScreen } from './components/TypingMessageScreen';
 import { FinalScreen } from './components/FinalScreen';
 import { EditModal } from './components/EditModal';
+import { LoveMeterScreen } from './components/LoveMeterScreen';
 import { BirthdayConfig } from './types';
 import { defaultConfig, getConfigFromUrl } from './utils';
 
@@ -25,7 +26,13 @@ export default function App() {
   if (!isLoaded) return null;
 
   return (
-    <div className="min-h-screen bg-black bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-rose-950/60 via-gray-950 to-black flex items-center justify-center overflow-hidden font-sans text-slate-100">
+    <div className="min-h-screen bg-[#251b1b] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#4a3230] via-[#2a1d1c] to-[#140c0c] flex items-center justify-center overflow-hidden font-sans text-slate-100 relative">
+      
+      {/* Dreamy Bokeh Orbs */}
+      <div className="absolute top-0 left-1/4 w-[40vw] h-[40vw] bg-rose-300/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-[50vw] h-[50vw] bg-orange-200/5 rounded-full blur-[150px] pointer-events-none mix-blend-screen"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] bg-pink-900/20 rounded-full blur-[150px] pointer-events-none mix-blend-overlay"></div>
+
       <FloatingHearts />
 
       <div className="relative z-10 w-full px-4">
@@ -34,16 +41,19 @@ export default function App() {
             <LockScreen key="lock" passcode={config.passcode} onUnlock={() => setStep(1)} />
           )}
           {step === 1 && (
-            <GiftScreen key="gift" onNext={() => setStep(2)} />
+            <LoveMeterScreen key="love" onNext={() => setStep(2)} />
           )}
           {step === 2 && (
-            <LetterCoverScreen key="cover" onNext={() => setStep(3)} />
+            <GiftScreen key="gift" onNext={() => setStep(3)} />
           )}
           {step === 3 && (
-            <TypingMessageScreen key="typing" title={config.finalTitle} message={config.finalMessage} onNext={() => setStep(4)} />
+            <LetterCoverScreen key="cover" onNext={() => setStep(4)} />
           )}
           {step === 4 && (
-            <FinalScreen key="final" onReplay={() => setStep(0)} />
+            <TypingMessageScreen key="typing" title={config.finalTitle} message={config.finalMessage} partyName={config.partyName || "Natan 22th Birthday"} onNext={() => setStep(5)} />
+          )}
+          {step === 5 && (
+            <FinalScreen key="final" title={config.outroTitle || "Happy Birthday"} message={config.outroMessage || "Thank you for being part of my life.\n\nI hope this little gift can make your special day even more beautiful.\n\nForever Yours. ❤️"} onReplay={() => setStep(0)} />
           )}
         </AnimatePresence>
       </div>

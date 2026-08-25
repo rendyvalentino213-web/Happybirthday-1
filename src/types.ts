@@ -3,4 +3,7 @@ export interface BirthdayConfig {
   giftMessage: string;
   finalTitle: string;
   finalMessage: string;
+  partyName?: string;
+  outroTitle?: string;
+  outroMessage?: string;
 }

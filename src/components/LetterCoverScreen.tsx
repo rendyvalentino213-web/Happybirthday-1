@@ -12,11 +12,11 @@ export function LetterCoverScreen({ onNext }: { onNext: () => void }) {
         A Love Letter For You
       </motion.p>
       
-      <motion.h2 className="text-5xl md:text-6xl font-script text-transparent bg-clip-text bg-gradient-to-r from-yellow-100 via-pink-200 to-rose-400 mb-8 drop-shadow-[0_0_15px_rgba(244,114,182,0.6)] py-2 leading-tight">
+      <motion.h2 className="text-5xl md:text-6xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-yellow-100 via-pink-200 to-rose-400 mb-8 drop-shadow-[0_0_15px_rgba(244,114,182,0.6)] py-2 leading-tight font-semibold italic">
         Your Special Day
       </motion.h2>
       
-      <motion.p className="text-rose-50 font-serif italic mb-12 text-lg drop-shadow-sm">
+      <motion.p className="text-rose-50 font-sans italic mb-12 text-lg drop-shadow-sm tracking-wide">
         Created with love, just for you
       </motion.p>
       

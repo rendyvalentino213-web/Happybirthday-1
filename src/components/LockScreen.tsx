@@ -57,7 +57,7 @@ export function LockScreen({ passcode, onUnlock }: { passcode: string, onUnlock:
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 1.1, filter: 'blur(10px)' }}
       transition={{ duration: 0.5 }}
-      className="relative z-10 flex flex-col items-center justify-center p-10 max-w-sm w-full mx-auto bg-black/40 backdrop-blur-2xl rounded-[40px] shadow-2xl border border-white/5 text-center"
+      className="relative z-10 flex flex-col items-center justify-center p-8 md:p-12 max-w-lg w-full mx-auto text-center"
     >
       <div className="w-12 h-12 rounded-full border border-rose-500/20 flex items-center justify-center mb-6 bg-rose-500/10">
         <Lock className="w-4 h-4 text-rose-300" />
@@ -66,6 +66,7 @@ export function LockScreen({ passcode, onUnlock }: { passcode: string, onUnlock:
       <p className="text-[10px] tracking-[0.3em] text-rose-200/50 uppercase font-sans mb-3 font-bold flex items-center justify-center gap-3">
         <span className="w-3 h-[1px] bg-rose-200/50"></span>
         FOR YOUR EYES ONLY
+        <span className="w-3 h-[1px] bg-rose-200/50"></span>
       </p>
 
       <h2 className="text-3xl md:text-4xl font-serif text-white mb-4 drop-shadow-sm leading-tight font-medium">
@@ -80,27 +81,27 @@ export function LockScreen({ passcode, onUnlock }: { passcode: string, onUnlock:
         <motion.div 
           animate={error ? { x: [-10, 10, -10, 10, 0] } : {}} 
           transition={{ duration: 0.4 }}
-          className="flex gap-4 mb-10 justify-center"
+          className="flex items-center gap-4 mb-12 justify-center"
         >
           {code.map((digit, idx) => (
             <input
               key={idx}
               ref={(el) => (inputRefs.current[idx] = el)}
-              type="text"
+              type="password"
               inputMode="numeric"
               pattern="[0-9]*"
               maxLength={1}
               value={digit}
               onChange={(e) => handleChange(idx, e.target.value)}
               onKeyDown={(e) => handleKeyDown(idx, e)}
-              className="w-14 h-16 text-center text-2xl text-white font-bold bg-transparent rounded-2xl border-2 border-rose-500/30 focus:outline-none focus:border-rose-400 focus:bg-rose-500/10 transition-all shadow-inner"
+              className="w-16 h-20 md:w-20 md:h-24 text-center text-4xl text-[#fff0e6] font-serif bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 focus:outline-none focus:border-rose-400 focus:bg-white/10 transition-all shadow-[0_4px_30px_rgba(0,0,0,0.1)] drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
             />
           ))}
         </motion.div>
         
         <button
           type="submit"
-          className="w-full py-4 font-bold text-sm text-white font-sans transition-all rounded-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 active:scale-95 shadow-[0_0_20px_rgba(244,63,94,0.3)] flex items-center justify-center gap-2"
+          className="w-full max-w-[280px] py-4 font-bold text-sm tracking-wide text-white font-sans transition-all rounded-full bg-gradient-to-r from-rose-600/80 to-pink-600/80 hover:from-rose-500 hover:to-pink-500 active:scale-95 shadow-[0_0_20px_rgba(244,63,94,0.3)] flex items-center justify-center gap-2 backdrop-blur-sm"
         >
           Unlock it <ArrowRight className="w-4 h-4" />
         </button>

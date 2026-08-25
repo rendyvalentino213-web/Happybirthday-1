@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { RotateCcw } from 'lucide-react';
 
-export function FinalScreen({ onReplay }: { onReplay: () => void }) {
+export function FinalScreen({ title, message, onReplay }: { title: string, message: string, onReplay: () => void }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -14,18 +14,16 @@ export function FinalScreen({ onReplay }: { onReplay: () => void }) {
         transition={{ delay: 0.3, type: "spring" }}
         className="text-6xl md:text-8xl lg:text-9xl font-script text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-pink-300 to-rose-400 mb-8 drop-shadow-[0_0_20px_rgba(244,114,182,0.8)] leading-tight py-4"
       >
-        Happy Birthday
+        {title}
       </motion.h1>
       
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        className="text-lg md:text-2xl text-white drop-shadow-sm font-sans tracking-wide space-y-4 mb-12"
+        className="text-lg md:text-2xl text-white drop-shadow-sm font-sans tracking-wide space-y-4 mb-12 whitespace-pre-wrap"
       >
-        <p>Thank you for being part of my life.</p>
-        <p>I hope this little gift can make your special day even more beautiful.</p>
-        <p className="mt-8 text-3xl font-script text-pink-300 drop-shadow-[0_0_10px_rgba(244,114,182,0.6)]">Forever Yours. ❤️</p>
+        {message}
       </motion.div>
 
       <motion.button
