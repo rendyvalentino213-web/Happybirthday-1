@@ -2,10 +2,42 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Lock, ArrowRight } from 'lucide-react';
 
-export function LockScreen({ passcode, onUnlock }: { passcode: string, onUnlock: () => void }) {
+export function LockScreen({ passcode, theme = 'rose', onUnlock }: { passcode: string, theme?: 'rose' | 'blue' | 'purple', onUnlock: () => void }) {
   const [code, setCode] = useState(['', '', '', '']);
   const [error, setError] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const themeStyles = {
+    rose: {
+      iconBg: "border-rose-500/20 bg-rose-500/10",
+      icon: "text-rose-300",
+      textSubtitle: "text-rose-200/50",
+      line: "bg-rose-200/50",
+      textMuted: "text-rose-100/60",
+      focusBorder: "focus:border-rose-400",
+      buttonBg: "from-rose-600/80 to-pink-600/80 hover:from-rose-500 hover:to-pink-500 shadow-[0_0_20px_rgba(244,63,94,0.3)]",
+    },
+    blue: {
+      iconBg: "border-cyan-500/20 bg-cyan-500/10",
+      icon: "text-cyan-300",
+      textSubtitle: "text-cyan-200/50",
+      line: "bg-cyan-200/50",
+      textMuted: "text-cyan-100/60",
+      focusBorder: "focus:border-cyan-400",
+      buttonBg: "from-blue-600/80 to-cyan-600/80 hover:from-blue-500 hover:to-cyan-500 shadow-[0_0_20px_rgba(6,182,212,0.3)]",
+    },
+    purple: {
+      iconBg: "border-fuchsia-500/20 bg-fuchsia-500/10",
+      icon: "text-fuchsia-300",
+      textSubtitle: "text-fuchsia-200/50",
+      line: "bg-fuchsia-200/50",
+      textMuted: "text-fuchsia-100/60",
+      focusBorder: "focus:border-fuchsia-400",
+      buttonBg: "from-purple-600/80 to-fuchsia-600/80 hover:from-purple-500 hover:to-fuchsia-500 shadow-[0_0_20px_rgba(217,70,239,0.3)]",
+    }
+  };
+
+  const current = themeStyles[theme];
 
   const handleChange = (index: number, value: string) => {
     // Only allow numbers or empty
@@ -59,21 +91,21 @@ export function LockScreen({ passcode, onUnlock }: { passcode: string, onUnlock:
       transition={{ duration: 0.5 }}
       className="relative z-10 flex flex-col items-center justify-center p-8 md:p-12 max-w-lg w-full mx-auto text-center"
     >
-      <div className="w-12 h-12 rounded-full border border-rose-500/20 flex items-center justify-center mb-6 bg-rose-500/10">
-        <Lock className="w-4 h-4 text-rose-300" />
+      <div className={`w-12 h-12 rounded-full border flex items-center justify-center mb-6 ${current.iconBg}`}>
+        <Lock className={`w-4 h-4 ${current.icon}`} />
       </div>
 
-      <p className="text-[10px] tracking-[0.3em] text-rose-200/50 uppercase font-sans mb-3 font-bold flex items-center justify-center gap-3">
-        <span className="w-3 h-[1px] bg-rose-200/50"></span>
+      <p className={`text-[10px] tracking-[0.3em] ${current.textSubtitle} uppercase font-sans mb-3 font-bold flex items-center justify-center gap-3`}>
+        <span className={`w-3 h-[1px] ${current.line}`}></span>
         FOR YOUR EYES ONLY
-        <span className="w-3 h-[1px] bg-rose-200/50"></span>
+        <span className={`w-3 h-[1px] ${current.line}`}></span>
       </p>
 
       <h2 className="text-3xl md:text-4xl font-serif text-white mb-4 drop-shadow-sm leading-tight font-medium">
         Enter Your Secret<br/>Code
       </h2>
 
-      <p className="text-rose-100/60 mb-10 text-xs md:text-sm font-sans tracking-wide px-2 leading-relaxed">
+      <p className={`${current.textMuted} mb-10 text-xs md:text-sm font-sans tracking-wide px-2 leading-relaxed`}>
         Something has been waiting just past the surface, only for you.
       </p>
       
@@ -94,14 +126,14 @@ export function LockScreen({ passcode, onUnlock }: { passcode: string, onUnlock:
               value={digit}
               onChange={(e) => handleChange(idx, e.target.value)}
               onKeyDown={(e) => handleKeyDown(idx, e)}
-              className="w-16 h-20 md:w-20 md:h-24 text-center text-4xl text-[#fff0e6] font-serif bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 focus:outline-none focus:border-rose-400 focus:bg-white/10 transition-all shadow-[0_4px_30px_rgba(0,0,0,0.1)] drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"
+              className={`w-16 h-20 md:w-20 md:h-24 text-center text-4xl text-[#fff0e6] font-serif bg-white/5 backdrop-blur-sm rounded-2xl border border-white/20 focus:outline-none ${current.focusBorder} focus:bg-white/10 transition-all shadow-[0_4px_30px_rgba(0,0,0,0.1)] drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]`}
             />
           ))}
         </motion.div>
         
         <button
           type="submit"
-          className="w-full max-w-[280px] py-4 font-bold text-sm tracking-wide text-white font-sans transition-all rounded-full bg-gradient-to-r from-rose-600/80 to-pink-600/80 hover:from-rose-500 hover:to-pink-500 active:scale-95 shadow-[0_0_20px_rgba(244,63,94,0.3)] flex items-center justify-center gap-2 backdrop-blur-sm"
+          className={`w-full max-w-[280px] py-4 font-bold text-sm tracking-wide text-white font-sans transition-all rounded-full bg-gradient-to-r ${current.buttonBg} active:scale-95 flex items-center justify-center gap-2 backdrop-blur-sm`}
         >
           Unlock it <ArrowRight className="w-4 h-4" />
         </button>

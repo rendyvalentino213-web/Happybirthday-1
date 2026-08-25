@@ -47,6 +47,19 @@ export function EditModal({
 
         <div className="space-y-4 text-left">
           <div>
+            <label className="block text-sm font-medium text-slate-300 mb-1">Tema Warna</label>
+            <select
+              value={config.theme || 'rose'}
+              onChange={(e) => setConfig({ ...config, theme: e.target.value as any })}
+              className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white focus:ring-2 focus:ring-pink-500 outline-none appearance-none"
+            >
+              <option value="rose">Tema 1: Rose Mocha (Original)</option>
+              <option value="blue">Tema 2: Biru Malam</option>
+              <option value="purple">Tema 3: Ungu Gelap</option>
+            </select>
+          </div>
+
+          <div>
             <label className="block text-sm font-medium text-slate-300 mb-1">Kode Masuk (Passcode 4 Digit)</label>
             <input
               type="text"

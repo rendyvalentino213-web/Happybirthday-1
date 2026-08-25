@@ -2,10 +2,36 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Heart } from 'lucide-react';
 
-export function LoveMeterScreen({ onNext }: { onNext: () => void }) {
+export function LoveMeterScreen({ theme = 'rose', onNext }: { theme?: 'rose' | 'blue' | 'purple', onNext: () => void }) {
   const [progress, setProgress] = useState(0);
   const [isHolding, setIsHolding] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const themeStyles = {
+    rose: {
+      fill: "text-[#e6a88b]",
+      border: "border-[#e6a88b]/40",
+      hover: "hover:bg-[#e6a88b]/10",
+      active: "active:bg-[#e6a88b]/20",
+      textSubtitle: "text-rose-200/80",
+    },
+    blue: {
+      fill: "text-cyan-400",
+      border: "border-cyan-400/40",
+      hover: "hover:bg-cyan-400/10",
+      active: "active:bg-cyan-400/20",
+      textSubtitle: "text-cyan-200/80",
+    },
+    purple: {
+      fill: "text-fuchsia-400",
+      border: "border-fuchsia-400/40",
+      hover: "hover:bg-fuchsia-400/10",
+      active: "active:bg-fuchsia-400/20",
+      textSubtitle: "text-fuchsia-200/80",
+    }
+  };
+
+  const current = themeStyles[theme];
 
   useEffect(() => {
     if (isHolding) {
@@ -74,7 +100,7 @@ export function LoveMeterScreen({ onNext }: { onNext: () => void }) {
       transition={{ duration: 0.5 }}
       className="relative z-10 flex flex-col items-center justify-center p-8 max-w-lg w-full mx-auto text-center h-screen select-none"
     >
-      <p className="text-[10px] tracking-[0.3em] text-[#e6a88b]/80 uppercase font-sans mb-6 font-bold flex items-center justify-center gap-2">
+      <p className={`text-[10px] tracking-[0.3em] ${current.textSubtitle} uppercase font-sans mb-6 font-bold flex items-center justify-center gap-2`}>
         <Heart className="w-3 h-3 fill-current" /> LOVE METER <Heart className="w-3 h-3 fill-current" />
       </p>
 
@@ -97,7 +123,7 @@ export function LoveMeterScreen({ onNext }: { onNext: () => void }) {
           className="absolute inset-0 overflow-hidden transition-all duration-75"
           style={{ clipPath: `inset(${100 - progress}% 0 0 0)` }}
         >
-          <svg viewBox="0 0 24 24" className="w-full h-full text-[#e6a88b] fill-current" strokeWidth="0">
+          <svg viewBox="0 0 24 24" className={`w-full h-full ${current.fill} fill-current`} strokeWidth="0">
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
           </svg>
         </div>
@@ -105,7 +131,7 @@ export function LoveMeterScreen({ onNext }: { onNext: () => void }) {
 
       <div className="h-16 mb-8">
         <h3 className="text-2xl font-black text-white mb-2 font-sans drop-shadow-sm">{progress}%</h3>
-        <p className="text-sm text-rose-200/80 font-sans italic drop-shadow-sm">
+        <p className={`text-sm ${current.textSubtitle} font-sans italic drop-shadow-sm`}>
           {getStatusText()}
         </p>
       </div>
@@ -116,7 +142,7 @@ export function LoveMeterScreen({ onNext }: { onNext: () => void }) {
         onMouseLeave={stopHolding}
         onTouchStart={startHolding}
         onTouchEnd={stopHolding}
-        className="px-8 py-3.5 font-bold text-sm tracking-wide text-[#e6a88b] font-sans transition-all rounded-full border border-[#e6a88b]/40 hover:bg-[#e6a88b]/10 active:scale-95 active:bg-[#e6a88b]/20 flex items-center justify-center gap-3 w-full max-w-[280px]"
+        className={`px-8 py-3.5 font-bold text-sm tracking-wide ${current.fill} font-sans transition-all rounded-full border ${current.border} ${current.hover} active:scale-95 ${current.active} flex items-center justify-center gap-3 w-full max-w-[280px]`}
         style={{ touchAction: 'manipulation', WebkitUserSelect: 'none' }}
       >
         <Heart className="w-4 h-4 fill-current" /> Tahan buktiin cintamu 👆

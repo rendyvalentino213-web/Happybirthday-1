@@ -2,12 +2,35 @@ import { motion, useInView } from 'motion/react';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { ArrowDown } from 'lucide-react';
 
-export function TypingMessageScreen({ title, message, partyName, onNext }: { title: string, message: string, partyName: string, onNext: () => void }) {
+export function TypingMessageScreen({ title, message, partyName, theme = 'rose', onNext }: { title: string, message: string, partyName: string, theme?: 'rose' | 'blue' | 'purple', onNext: () => void }) {
   const [displayedText, setDisplayedText] = useState('');
   const [isTypingDone, setIsTypingDone] = useState(false);
   const [startTyping, setStartTyping] = useState(false);
   const messageRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(messageRef, { once: true, amount: 0.3 });
+
+  const themeStyles = {
+    rose: {
+      title: "from-yellow-100 via-pink-200 to-rose-400 drop-shadow-[0_0_15px_rgba(244,114,182,0.6)]",
+      border: "border-rose-200/20",
+      cursor: "border-rose-300",
+      button: "text-rose-900 bg-gradient-to-r from-rose-100 to-pink-100 shadow-[0_0_20px_rgba(255,228,230,0.4)]"
+    },
+    blue: {
+      title: "from-cyan-100 via-blue-200 to-indigo-400 drop-shadow-[0_0_15px_rgba(96,165,250,0.6)]",
+      border: "border-cyan-200/20",
+      cursor: "border-cyan-300",
+      button: "text-indigo-900 bg-gradient-to-r from-cyan-100 to-blue-100 shadow-[0_0_20px_rgba(207,250,254,0.4)]"
+    },
+    purple: {
+      title: "from-fuchsia-100 via-purple-200 to-pink-400 drop-shadow-[0_0_15px_rgba(192,132,252,0.6)]",
+      border: "border-purple-200/20",
+      cursor: "border-purple-300",
+      button: "text-purple-900 bg-gradient-to-r from-fuchsia-100 to-purple-100 shadow-[0_0_20px_rgba(250,232,255,0.4)]"
+    }
+  };
+
+  const current = themeStyles[theme];
 
   // Start typing when scrolled into view
   useEffect(() => {
@@ -127,15 +150,15 @@ export function TypingMessageScreen({ title, message, partyName, onNext }: { tit
 
         {/* --- PART 2: Typing Message Section --- */}
         <div ref={messageRef} className="w-full min-h-screen flex flex-col items-center justify-center p-4 relative z-10 py-20 bg-black/20 backdrop-blur-sm">
-          <div className="max-w-3xl w-full mx-auto bg-white/10 backdrop-blur-xl rounded-[40px] shadow-2xl border border-rose-200/20 text-center p-8 md:p-14">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-transparent bg-clip-text bg-gradient-to-r from-yellow-100 via-pink-200 to-rose-400 mb-10 drop-shadow-[0_0_15px_rgba(244,114,182,0.6)] py-2 font-semibold italic">
+          <div className={`max-w-3xl w-full mx-auto bg-white/10 backdrop-blur-xl rounded-[40px] shadow-2xl border ${current.border} text-center p-8 md:p-14`}>
+            <h2 className={`text-4xl md:text-5xl lg:text-6xl font-serif text-transparent bg-clip-text bg-gradient-to-r ${current.title} mb-10 py-2 font-semibold italic`}>
               {title}
             </h2>
             
             <div className="relative w-full min-h-[200px] flex items-center justify-center mb-12 text-left md:text-center">
               <p className="text-lg md:text-xl lg:text-2xl text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] leading-relaxed font-sans px-2 md:px-6 whitespace-pre-wrap">
                 {displayedText}
-                {!isTypingDone && startTyping && <span className="animate-pulse border-r-2 border-rose-300 ml-1"></span>}
+                {!isTypingDone && startTyping && <span className={`animate-pulse border-r-2 ${current.cursor} ml-1`}></span>}
               </p>
             </div>
             
@@ -144,7 +167,7 @@ export function TypingMessageScreen({ title, message, partyName, onNext }: { tit
               animate={{ opacity: isTypingDone ? 1 : 0 }}
               disabled={!isTypingDone}
               onClick={onNext}
-              className="px-10 py-4 font-bold text-rose-900 transition-all rounded-full bg-gradient-to-r from-rose-100 to-pink-100 hover:from-white hover:to-white active:scale-95 shadow-[0_0_20px_rgba(255,228,230,0.4)] disabled:opacity-0 tracking-widest"
+              className={`px-10 py-4 font-bold transition-all rounded-full hover:from-white hover:to-white active:scale-95 disabled:opacity-0 tracking-widest ${current.button}`}
             >
               ONE MORE THING ✨
             </motion.button>

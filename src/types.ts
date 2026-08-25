@@ -6,4 +6,5 @@ export interface BirthdayConfig {
   partyName?: string;
   outroTitle?: string;
   outroMessage?: string;
+  theme?: 'rose' | 'blue' | 'purple';
 }

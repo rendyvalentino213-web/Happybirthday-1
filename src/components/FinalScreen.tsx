@@ -1,7 +1,14 @@
 import { motion } from 'motion/react';
 import { RotateCcw } from 'lucide-react';
 
-export function FinalScreen({ title, message, onReplay }: { title: string, message: string, onReplay: () => void }) {
+export function FinalScreen({ title, message, theme = 'rose', onReplay }: { title: string, message: string, theme?: 'rose' | 'blue' | 'purple', onReplay: () => void }) {
+  const themeStyles = {
+    rose: "from-yellow-200 via-pink-300 to-rose-400 drop-shadow-[0_0_20px_rgba(244,114,182,0.8)]",
+    blue: "from-cyan-200 via-blue-300 to-indigo-400 drop-shadow-[0_0_20px_rgba(96,165,250,0.8)]",
+    purple: "from-fuchsia-200 via-purple-300 to-pink-400 drop-shadow-[0_0_20px_rgba(192,132,252,0.8)]"
+  };
+  const currentTitleStyle = themeStyles[theme];
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -12,7 +19,7 @@ export function FinalScreen({ title, message, onReplay }: { title: string, messa
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.3, type: "spring" }}
-        className="text-6xl md:text-8xl lg:text-9xl font-script text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 via-pink-300 to-rose-400 mb-8 drop-shadow-[0_0_20px_rgba(244,114,182,0.8)] leading-tight py-4"
+        className={`text-6xl md:text-8xl lg:text-9xl font-script text-transparent bg-clip-text bg-gradient-to-r ${currentTitleStyle} mb-8 leading-tight py-4`}
       >
         {title}
       </motion.h1>

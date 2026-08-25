@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles } from 'lucide-react';
 
-export function GiftScreen({ onNext }: { onNext: () => void }) {
+export function GiftScreen({ theme = 'rose', onNext }: { theme?: 'rose' | 'blue' | 'purple', onNext: () => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [showFlowers, setShowFlowers] = useState(false);
 
@@ -15,6 +15,32 @@ export function GiftScreen({ onNext }: { onNext: () => void }) {
     }, 2500); // Wait for the flowers to burst before moving to the next screen
   };
 
+  const themeStyles = {
+    rose: {
+      ribbonBorder: "border-rose-300",
+      ribbonBg: "bg-rose-300",
+      ribbonBand1: "from-rose-200 to-rose-400",
+      ribbonBand2: "from-rose-300 to-rose-500",
+      textTitle: "text-rose-200/90",
+    },
+    blue: {
+      ribbonBorder: "border-cyan-300",
+      ribbonBg: "bg-cyan-300",
+      ribbonBand1: "from-cyan-200 to-cyan-400",
+      ribbonBand2: "from-cyan-300 to-cyan-500",
+      textTitle: "text-cyan-200/90",
+    },
+    purple: {
+      ribbonBorder: "border-fuchsia-300",
+      ribbonBg: "bg-fuchsia-300",
+      ribbonBand1: "from-fuchsia-200 to-fuchsia-400",
+      ribbonBand2: "from-fuchsia-300 to-fuchsia-500",
+      textTitle: "text-fuchsia-200/90",
+    }
+  };
+
+  const current = themeStyles[theme];
+
   const flowerEmojis = ['🌸', '🌺', '🌼', '🌷', '🌹', '✨', '💖'];
 
   return (
@@ -26,7 +52,7 @@ export function GiftScreen({ onNext }: { onNext: () => void }) {
         animate={{ opacity: 1, y: 0 }}
         className="text-center"
       >
-        <h2 className="font-sans font-bold tracking-[0.3em] text-xl md:text-2xl text-rose-200/90 drop-shadow-md">
+        <h2 className={`font-sans font-bold tracking-[0.3em] text-xl md:text-2xl ${current.textTitle} drop-shadow-md`}>
           ADA SESUATU UNTUKMU
         </h2>
       </motion.div>
@@ -80,13 +106,13 @@ export function GiftScreen({ onNext }: { onNext: () => void }) {
         >
           {/* Ribbon Top/Bow */}
           <div className="absolute -top-12 left-1/2 -translate-x-1/2 flex z-10 drop-shadow-xl">
-            <div className="w-14 h-14 bg-transparent border-[10px] border-rose-300 -mr-3" style={{ borderRadius: '50% 50% 0 50%', transform: 'rotate(45deg)' }} />
-            <div className="w-14 h-14 bg-transparent border-[10px] border-rose-300 -ml-3" style={{ borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)' }} />
+            <div className={`w-14 h-14 bg-transparent border-[10px] ${current.ribbonBorder} -mr-3`} style={{ borderRadius: '50% 50% 0 50%', transform: 'rotate(45deg)' }} />
+            <div className={`w-14 h-14 bg-transparent border-[10px] ${current.ribbonBorder} -ml-3`} style={{ borderRadius: '50% 50% 50% 0', transform: 'rotate(-45deg)' }} />
           </div>
-          <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 bg-rose-300 rounded-full z-20 shadow-md" />
+          <div className={`absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 ${current.ribbonBg} rounded-full z-20 shadow-md`} />
           
           {/* Ribbon Band */}
-          <div className="absolute left-1/2 -translate-x-1/2 w-10 h-full bg-gradient-to-b from-rose-200 to-rose-400 shadow-sm" />
+          <div className={`absolute left-1/2 -translate-x-1/2 w-10 h-full bg-gradient-to-b ${current.ribbonBand1} shadow-sm`} />
         </motion.div>
         
         {/* Box Base */}
@@ -96,7 +122,7 @@ export function GiftScreen({ onNext }: { onNext: () => void }) {
           className="absolute bottom-0 left-0 w-48 h-32 bg-gradient-to-br from-[#c4a997] to-[#8a7263] rounded-b-lg shadow-2xl overflow-hidden border-t border-[#d4b9a7] z-20"
         >
           {/* Ribbon Band */}
-          <div className="absolute left-1/2 -translate-x-1/2 w-10 h-full bg-gradient-to-b from-rose-300 to-rose-500 shadow-inner" />
+          <div className={`absolute left-1/2 -translate-x-1/2 w-10 h-full bg-gradient-to-b ${current.ribbonBand2} shadow-inner`} />
           
           {/* Dark inner shadow at top to look 3D */}
           <div className="absolute top-0 left-0 w-full h-4 bg-black/20 blur-[2px]" />

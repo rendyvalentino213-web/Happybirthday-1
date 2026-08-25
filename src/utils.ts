@@ -8,6 +8,7 @@ export const defaultConfig: BirthdayConfig = {
   partyName: "Natan 22th Birthday",
   outroTitle: "Happy Birthday",
   outroMessage: "Thank you for being part of my life.\n\nI hope this little gift can make your special day even more beautiful.\n\nForever Yours. ❤️",
+  theme: 'rose',
 };
 
 export function encodeConfig(config: BirthdayConfig): string {
