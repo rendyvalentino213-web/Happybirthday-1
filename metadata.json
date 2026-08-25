@@ -1,0 +1,6 @@
+{
+  "name": "Romantic Birthday Greeting",
+  "description": "An interactive, animated birthday greeting app with passcode lock and custom messages.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
