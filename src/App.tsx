@@ -47,7 +47,7 @@ export default function App() {
             <TypingMessageScreen key="typing" title={config.finalTitle} message={config.finalMessage} partyName={config.partyName || "Natan 22th Birthday"} theme={config.theme || 'rose'} onNext={() => setStep(5)} />
           )}
           {step === 5 && (
-            <FinalScreen key="final" title={config.outroTitle || "Happy Birthday"} message={config.outroMessage || "Thank you for being part of my life.\n\nI hope this little gift can make your special day even more beautiful.\n\nForever Yours. ❤️"} theme={config.theme || 'rose'} onReplay={() => setStep(0)} />
+            <FinalScreen key="final" title={config.outroTitle || "Happy Birthday"} message={config.outroMessage || "Thank you for being part of my life.\n\nI hope this little gift can make your special day even more beautiful.\n\nForever Yours. ❤️"} photoUrl={config.photoUrl} theme={config.theme || 'rose'} onReplay={() => setStep(0)} />
           )}
         </AnimatePresence>
       </div>

@@ -7,4 +7,5 @@ export interface BirthdayConfig {
   outroTitle?: string;
   outroMessage?: string;
   theme?: 'rose' | 'blue' | 'purple';
+  photoUrl?: string;
 }

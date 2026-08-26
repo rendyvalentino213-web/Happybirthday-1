@@ -9,6 +9,7 @@ export const defaultConfig: BirthdayConfig = {
   outroTitle: "Happy Birthday",
   outroMessage: "Thank you for being part of my life.\n\nI hope this little gift can make your special day even more beautiful.\n\nForever Yours. ❤️",
   theme: 'rose',
+  photoUrl: '/photo.jpg',
 };
 
 export function encodeConfig(config: BirthdayConfig): string {

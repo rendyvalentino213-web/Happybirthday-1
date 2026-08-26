@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import { RotateCcw } from 'lucide-react';
 
-export function FinalScreen({ title, message, theme = 'rose', onReplay }: { title: string, message: string, theme?: 'rose' | 'blue' | 'purple', onReplay: () => void }) {
+export function FinalScreen({ title, message, photoUrl, theme = 'rose', onReplay }: { title: string, message: string, photoUrl?: string, theme?: 'rose' | 'blue' | 'purple', onReplay: () => void }) {
   const themeStyles = {
     rose: "from-yellow-200 via-pink-300 to-rose-400 drop-shadow-[0_0_20px_rgba(244,114,182,0.8)]",
     blue: "from-cyan-200 via-blue-300 to-indigo-400 drop-shadow-[0_0_20px_rgba(96,165,250,0.8)]",
@@ -23,6 +23,27 @@ export function FinalScreen({ title, message, theme = 'rose', onReplay }: { titl
       >
         {title}
       </motion.h1>
+
+      {photoUrl && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5, rotate: -5 }}
+          animate={{ opacity: 1, scale: 1, rotate: 2 }}
+          transition={{ delay: 0.8, type: "spring" }}
+          className="mb-10 relative z-10"
+        >
+          <div className="p-3 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl inline-block transform transition-transform hover:scale-105 hover:rotate-0 duration-300">
+            <img 
+              src={photoUrl} 
+              alt="Memory" 
+              className="w-48 h-48 md:w-64 md:h-64 object-cover rounded-xl shadow-inner"
+              onError={(e) => {
+                // Hide broken images gracefully
+                (e.target as HTMLImageElement).style.display = 'none';
+              }}
+            />
+          </div>
+        </motion.div>
+      )}
       
       <motion.div
         initial={{ opacity: 0 }}
