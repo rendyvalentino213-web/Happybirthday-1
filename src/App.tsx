@@ -8,6 +8,7 @@ import { LetterCoverScreen } from './components/LetterCoverScreen';
 import { TypingMessageScreen } from './components/TypingMessageScreen';
 import { FinalScreen } from './components/FinalScreen';
 import { EditModal } from './components/EditModal';
+import { PasswordModal } from './components/PasswordModal';
 import { LoveMeterScreen } from './components/LoveMeterScreen';
 import { BirthdayConfig } from './types';
 import { defaultConfig, getConfigFromUrl } from './utils';
@@ -16,6 +17,7 @@ export default function App() {
   const [step, setStep] = useState(0);
   const [config, setConfig] = useState<BirthdayConfig>(defaultConfig);
   const [isEditing, setIsEditing] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -44,21 +46,30 @@ export default function App() {
             <LetterCoverScreen key="cover" theme={config.theme || 'rose'} onNext={() => setStep(4)} />
           )}
           {step === 4 && (
-            <TypingMessageScreen key="typing" title={config.finalTitle} message={config.finalMessage} partyName={config.partyName || "Natan 22th Birthday"} theme={config.theme || 'rose'} onNext={() => setStep(5)} />
+            <TypingMessageScreen key="typing" title={config.finalTitle} message={config.finalMessage} partyName={config.partyName || "Natan 22th Birthday"} photoUrl={config.photoUrl} theme={config.theme || 'rose'} onNext={() => setStep(5)} />
           )}
           {step === 5 && (
-            <FinalScreen key="final" title={config.outroTitle || "Happy Birthday"} message={config.outroMessage || "Thank you for being part of my life.\n\nI hope this little gift can make your special day even more beautiful.\n\nForever Yours. ❤️"} photoUrl={config.photoUrl} theme={config.theme || 'rose'} onReplay={() => setStep(0)} />
+            <FinalScreen key="final" title={config.outroTitle || "Happy Birthday"} message={config.outroMessage || "Thank you for being part of my life.\n\nI hope this little gift can make your special day even more beautiful.\n\nForever Yours. ❤️"} theme={config.theme || 'rose'} onReplay={() => setStep(0)} />
           )}
         </AnimatePresence>
       </div>
 
       <button
-        onClick={() => setIsEditing(true)}
+        onClick={() => setIsPasswordModalOpen(true)}
         className="fixed bottom-6 right-6 z-50 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full border border-white/20 text-white/50 hover:text-white transition-all shadow-lg"
         title="Edit Ucapan"
       >
         <Settings className="w-5 h-5" />
       </button>
+
+      <PasswordModal 
+        isOpen={isPasswordModalOpen} 
+        onClose={() => setIsPasswordModalOpen(false)} 
+        onSuccess={() => {
+          setIsPasswordModalOpen(false);
+          setIsEditing(true);
+        }} 
+      />
 
       {isEditing && (
         <EditModal

@@ -2,7 +2,7 @@ import { motion, useInView } from 'motion/react';
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { ArrowDown } from 'lucide-react';
 
-export function TypingMessageScreen({ title, message, partyName, theme = 'rose', onNext }: { title: string, message: string, partyName: string, theme?: 'rose' | 'blue' | 'purple', onNext: () => void }) {
+export function TypingMessageScreen({ title, message, partyName, photoUrl, theme = 'rose', onNext }: { title: string, message: string, partyName: string, photoUrl?: string, theme?: 'rose' | 'blue' | 'purple', onNext: () => void }) {
   const [displayedText, setDisplayedText] = useState('');
   const [isTypingDone, setIsTypingDone] = useState(false);
   const [startTyping, setStartTyping] = useState(false);
@@ -154,6 +154,26 @@ export function TypingMessageScreen({ title, message, partyName, theme = 'rose',
             <h2 className={`text-4xl md:text-5xl lg:text-6xl font-serif text-transparent bg-clip-text bg-gradient-to-r ${current.title} mb-10 py-2 font-semibold italic`}>
               {title}
             </h2>
+
+            {photoUrl && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5, rotate: -5 }}
+                animate={{ opacity: 1, scale: 1, rotate: 2 }}
+                transition={{ delay: 0.5, type: "spring" }}
+                className="mb-10 relative z-10 flex justify-center"
+              >
+                <div className="p-3 pb-10 md:p-4 md:pb-12 bg-[#f8f8f8] shadow-2xl inline-block transform transition-transform hover:scale-105 hover:rotate-[-2deg] duration-300 rounded-sm relative">
+                  <img 
+                    src={photoUrl} 
+                    alt="Memory" 
+                    className="w-48 h-48 md:w-64 md:h-64 object-cover rounded-sm shadow-[inset_0_0_4px_rgba(0,0,0,0.2)] border border-gray-200"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                    }}
+                  />
+                </div>
+              </motion.div>
+            )}
             
             <div className="relative w-full min-h-[200px] flex items-center justify-center mb-12 text-left md:text-center">
               <p className="text-lg md:text-xl lg:text-2xl text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.4)] leading-relaxed font-sans px-2 md:px-6 whitespace-pre-wrap">
