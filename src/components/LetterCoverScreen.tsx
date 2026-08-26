@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
+import { Disc } from 'lucide-react';
 
-export function LetterCoverScreen({ theme = 'rose', onNext }: { theme?: 'rose' | 'blue' | 'purple', onNext: () => void }) {
+export function LetterCoverScreen({ theme = 'rose', onNext, isPlaying, onToggleAudio }: { theme?: 'rose' | 'blue' | 'purple', onNext: () => void, isPlaying?: boolean, onToggleAudio?: () => void }) {
   const themeStyles = {
     rose: {
       border: "border-rose-200/20",
@@ -42,9 +43,60 @@ export function LetterCoverScreen({ theme = 'rose', onNext }: { theme?: 'rose' |
         Your Special Day
       </motion.h2>
       
-      <motion.p className={`${current.text} font-sans italic mb-12 text-lg drop-shadow-sm tracking-wide`}>
+      <motion.p className={`${current.text} font-sans italic mb-8 text-lg drop-shadow-sm tracking-wide`}>
         Created with love, just for you
       </motion.p>
+
+      {/* Spotify-style Music Player Widget */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.3 }}
+        className="mb-10 cursor-pointer group"
+        onClick={onToggleAudio}
+      >
+        <div className="flex items-center gap-4 bg-black/20 backdrop-blur-md px-5 py-3 rounded-full border border-white/10 shadow-lg hover:bg-black/30 transition-colors">
+          <div className="relative flex items-center justify-center w-12 h-12">
+            {/* Spinning Record */}
+            <motion.div
+              animate={isPlaying ? { rotate: 360 } : { rotate: 0 }}
+              transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+              className="absolute inset-0 bg-slate-900 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(255,255,255,0.2)] overflow-hidden"
+            >
+              {/* Grooves */}
+              <div className="absolute inset-[2px] border border-slate-700/50 rounded-full"></div>
+              <div className="absolute inset-[6px] border border-slate-700/50 rounded-full"></div>
+              <div className="absolute inset-[10px] border border-slate-700/50 rounded-full"></div>
+              {/* Inner Label */}
+              <div className={`w-5 h-5 rounded-full bg-gradient-to-tr ${current.title} flex items-center justify-center z-10`}>
+                <div className="w-1.5 h-1.5 bg-slate-900 rounded-full"></div>
+              </div>
+            </motion.div>
+          </div>
+          
+          <div className="flex flex-col text-left justify-center pr-2">
+            <p className="text-xs text-white/80 font-bold mb-1 tracking-wider uppercase">
+              {isPlaying ? 'Now Playing' : 'Paused'}
+            </p>
+            <div className="flex items-end gap-[3px] h-3">
+              {[1, 2, 3, 4, 5].map((bar) => (
+                <motion.div 
+                  key={bar}
+                  animate={{ 
+                    height: isPlaying ? ["20%", "100%", "30%", "90%", "20%"] : "20%" 
+                  }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    duration: 0.8 + bar * 0.15, 
+                    ease: "easeInOut" 
+                  }}
+                  className={`w-1 bg-white/90 rounded-t-sm`}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </motion.div>
       
       <motion.button 
         onClick={onNext} 

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Settings } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Settings, Music, VolumeX } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import { GalaxyBackground } from './components/GalaxyBackground';
 import { LockScreen } from './components/LockScreen';
@@ -19,11 +19,24 @@ export default function App() {
   const [isEditing, setIsEditing] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     setConfig(getConfigFromUrl());
     setIsLoaded(true);
   }, []);
+
+  const toggleAudio = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play().catch(e => console.error("Audio playback failed:", e));
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   if (!isLoaded) return null;
 
@@ -43,7 +56,7 @@ export default function App() {
             <GiftScreen key="gift" theme={config.theme || 'rose'} onNext={() => setStep(3)} />
           )}
           {step === 3 && (
-            <LetterCoverScreen key="cover" theme={config.theme || 'rose'} onNext={() => setStep(4)} />
+            <LetterCoverScreen key="cover" theme={config.theme || 'rose'} onNext={() => setStep(4)} isPlaying={isPlaying} onToggleAudio={toggleAudio} />
           )}
           {step === 4 && (
             <TypingMessageScreen key="typing" title={config.finalTitle} message={config.finalMessage} partyName={config.partyName || "Natan 22th Birthday"} photoUrl={config.photoUrl} theme={config.theme || 'rose'} onNext={() => setStep(5)} />
@@ -60,6 +73,18 @@ export default function App() {
         title="Edit Ucapan"
       >
         <Settings className="w-5 h-5" />
+      </button>
+
+      {/* Audio Element */}
+      <audio ref={audioRef} loop src="/music.mp3" />
+
+      {/* Audio Toggle Button */}
+      <button
+        onClick={toggleAudio}
+        className="fixed top-6 right-6 z-50 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full border border-white/20 text-white/50 hover:text-white transition-all shadow-lg"
+        title={isPlaying ? "Pause Music" : "Play Music"}
+      >
+        {isPlaying ? <Music className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
       </button>
 
       <PasswordModal 
