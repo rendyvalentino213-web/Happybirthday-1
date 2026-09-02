@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import { Disc } from 'lucide-react';
+import { Play, Pause } from 'lucide-react';
 
 export function LetterCoverScreen({ theme = 'rose', onNext, isPlaying, onToggleAudio }: { theme?: 'rose' | 'blue' | 'purple', onNext: () => void, isPlaying?: boolean, onToggleAudio?: () => void }) {
   const themeStyles = {
@@ -76,7 +76,7 @@ export function LetterCoverScreen({ theme = 'rose', onNext, isPlaying, onToggleA
           
           <div className="flex flex-col text-left justify-center pr-2">
             <p className="text-xs text-white/80 font-bold mb-1 tracking-wider uppercase">
-              {isPlaying ? 'Now Playing' : 'Paused'}
+              {isPlaying ? 'Now Playing' : 'Tap to Play'}
             </p>
             <div className="flex items-end gap-[3px] h-3">
               {[1, 2, 3, 4, 5].map((bar) => (
@@ -94,6 +94,10 @@ export function LetterCoverScreen({ theme = 'rose', onNext, isPlaying, onToggleA
                 />
               ))}
             </div>
+          </div>
+
+          <div className="ml-1 pl-4 border-l border-white/10 text-white/70 group-hover:text-white transition-colors flex items-center justify-center">
+            {isPlaying ? <Pause size={20} className="fill-current" /> : <Play size={20} className="fill-current ml-0.5" />}
           </div>
         </div>
       </motion.div>

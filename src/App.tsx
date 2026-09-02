@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Settings, Music, VolumeX } from 'lucide-react';
+import { Music, VolumeX } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
 import { GalaxyBackground } from './components/GalaxyBackground';
 import { LockScreen } from './components/LockScreen';
@@ -7,8 +7,6 @@ import { GiftScreen } from './components/GiftScreen';
 import { LetterCoverScreen } from './components/LetterCoverScreen';
 import { TypingMessageScreen } from './components/TypingMessageScreen';
 import { FinalScreen } from './components/FinalScreen';
-import { EditModal } from './components/EditModal';
-import { PasswordModal } from './components/PasswordModal';
 import { LoveMeterScreen } from './components/LoveMeterScreen';
 import { BirthdayConfig } from './types';
 import { defaultConfig, getConfigFromUrl } from './utils';
@@ -16,8 +14,6 @@ import { defaultConfig, getConfigFromUrl } from './utils';
 export default function App() {
   const [step, setStep] = useState(0);
   const [config, setConfig] = useState<BirthdayConfig>(defaultConfig);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -67,14 +63,6 @@ export default function App() {
         </AnimatePresence>
       </div>
 
-      <button
-        onClick={() => setIsPasswordModalOpen(true)}
-        className="fixed bottom-6 right-6 z-50 p-3 bg-white/10 hover:bg-white/20 backdrop-blur-md rounded-full border border-white/20 text-white/50 hover:text-white transition-all shadow-lg"
-        title="Edit Ucapan"
-      >
-        <Settings className="w-5 h-5" />
-      </button>
-
       {/* Audio Element */}
       <audio ref={audioRef} loop src="/music.mp3" />
 
@@ -86,26 +74,6 @@ export default function App() {
       >
         {isPlaying ? <Music className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
       </button>
-
-      <PasswordModal 
-        isOpen={isPasswordModalOpen} 
-        onClose={() => setIsPasswordModalOpen(false)} 
-        onSuccess={() => {
-          setIsPasswordModalOpen(false);
-          setIsEditing(true);
-        }} 
-      />
-
-      {isEditing && (
-        <EditModal
-          currentConfig={config}
-          onClose={() => setIsEditing(false)}
-          onSave={(newConfig) => {
-            setConfig(newConfig);
-            setStep(0); // Reset to test new config
-          }}
-        />
-      )}
     </div>
   );
 }

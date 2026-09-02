@@ -1,11 +1,11 @@
 import { BirthdayConfig } from './types';
 
 export const defaultConfig: BirthdayConfig = {
-  passcode: "1234",
+  passcode: "0309",
   giftMessage: "Ada hadiah spesial buat kamu...",
-  finalTitle: "Selamat Ulang Tahun Sayang! 🎉",
-  finalMessage: "Semoga panjang umur, sehat selalu, dan semua yang kamu semogakan terwujud. Terima kasih sudah jadi bagian terbaik dalam hidupku. I love you! ❤️",
-  partyName: "Natan 22th Birthday",
+  finalTitle: "Happy Birthday dede sayang",
+  finalMessage: "terimakasih sudah lahir di dunia ini, semoga kamu selalu menjadi pribadi yang lucu dan menggemaskan satu hal yang harus kamu tahu aku sangat berterimakasih kepada tuhan karna telah melahirkan kamu di hari ini sayang, i love u dede❤️",
+  partyName: "Ziya 21th Birthday",
   outroTitle: "Happy Birthday",
   outroMessage: "Thank you for being part of my life.\n\nI hope this little gift can make your special day even more beautiful.\n\nForever Yours. ❤️",
   theme: 'rose',
